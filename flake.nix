@@ -65,7 +65,7 @@
           specialArgs = {
             inherit inputs;
           };
-        };
+        };  
 
         # Jerry is an RPi 4 Model B running a Pimoroni 4-color wHAT e-ink display for
         # fun and profit, except there's no profit and I rewrote the e-ink controller driver

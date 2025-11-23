@@ -22,7 +22,7 @@ in
         init.defaultBranch = "master";
         core.editor = "vim";
 
-        aliases = {
+        alias = {
           # List aliases
           la = "!git config --list | grep -E '^alias' | cut -c 7-";
 
