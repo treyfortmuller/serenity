@@ -58,7 +58,6 @@
           system = "aarch64-linux";
           modules = [
             self.nixosModules.default
-            nixos-hardware.nixosModules.raspberry-pi-4
 
             # Using the jerry hardware config for now since I only have one pi
             ./jerry/hardware-configuration.nix
@@ -75,8 +74,6 @@
           system = "aarch64-linux";
           modules = [
             self.nixosModules.default
-            nixos-hardware.nixosModules.raspberry-pi-4
-            vscode-server.nixosModules.default
             ./jerry/configuration.nix
             ./jerry/hardware-configuration.nix
           ];
@@ -94,7 +91,10 @@
             # enabled by default should be hidden behind a mkEnableOption. Simply importing a module
             # should be a no-op to the resultant config, except for the absolute basics included in base.nix.
             imports = [
+              nixos-hardware.nixosModules.raspberry-pi-4
+              vscode-server.nixosModules.default
               ./modules/base.nix
+              ./modules/git.nix
               ./modules/inky.nix
             ];
 
