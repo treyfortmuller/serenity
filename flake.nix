@@ -5,16 +5,18 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     flake-utils.url = "github:numtide/flake-utils";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      nixos-hardware,
-      flake-utils,
-      # nixpkgs-unstable
+    { self
+    , nixpkgs
+    , nixos-hardware
+    , flake-utils
+    , vscode-server
+    , # nixpkgs-unstable
       ...
     }@inputs:
     let
@@ -74,6 +76,7 @@
           modules = [
             self.nixosModules.default
             nixos-hardware.nixosModules.raspberry-pi-4
+            vscode-server.nixosModules.default
             ./jerry/configuration.nix
             ./jerry/hardware-configuration.nix
           ];
@@ -111,7 +114,7 @@
               })
             ];
           };
-        };
+      };
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
     };

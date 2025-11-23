@@ -38,10 +38,10 @@
   users.mutableUsers = true; # So we can change passwords after install
   users.users.pi = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel"
       "networkmanager"
-    ]; 
+    ];
 
     # Can switch to nix-sops if I end up needing to ship more secrets
     initialHashedPassword = "$y$j9T$e/ww3cpvzIyWV2oz4VOd6/$6sMcui1lQ7tN7ZnjkJWySfaDbWAgs9V0tSuBTaViJu3";
