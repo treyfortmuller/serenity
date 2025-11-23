@@ -5,7 +5,7 @@ in
 {
   imports = [ ];
 
-  options.inky = {
+  options.serenity.inky = {
     enable = lib.mkEnableOption "inky e-ink displays";
   };
 

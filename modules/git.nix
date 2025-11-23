@@ -3,7 +3,7 @@ let
   cfg = config.customGit;
 in
 {
-  options.customGit = {
+  options.serenity.customGit = {
     enable = lib.mkEnableOption "custom git configuration for local hacking";
   };
 

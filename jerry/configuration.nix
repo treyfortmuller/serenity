@@ -10,6 +10,8 @@
 
   services.vscode-server.enable = true;
 
-  customGit.enable = true;
+  serenity = {
+    inky.enable = true;
+    customGit.enable = true;
+  };
 }
-

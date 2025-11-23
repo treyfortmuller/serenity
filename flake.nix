@@ -90,6 +90,8 @@
             # All modules should be added to default modules, all config that does not need to be
             # enabled by default should be hidden behind a mkEnableOption. Simply importing a module
             # should be a no-op to the resultant config, except for the absolute basics included in base.nix.
+            # 
+            # For this project we'll keep all options defined in-tree under `config.serenity`, as in, "serenity now!"
             imports = [
               nixos-hardware.nixosModules.raspberry-pi-4
               vscode-server.nixosModules.default
