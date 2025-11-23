@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.inky;
+  cfg = config.serenity.inky;
 in
 {
   imports = [ ];

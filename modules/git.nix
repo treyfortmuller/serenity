@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  cfg = config.customGit;
+  cfg = config.serenity.customGit;
 in
 {
   options.serenity.customGit = {
