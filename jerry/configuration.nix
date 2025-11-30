@@ -14,4 +14,8 @@
     inky.enable = true;
     customGit.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    weatherframe
+  ];
 }

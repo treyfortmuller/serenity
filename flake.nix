@@ -8,6 +8,10 @@
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    # Projects
+    weatherframe.url = "github:treyfortmuller/weatherframe";
+    weatherframe.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -16,6 +20,7 @@
     , nixos-hardware
     , flake-utils
     , vscode-server
+    , weatherframe
     , # nixpkgs-unstable
       ...
     }@inputs:
@@ -112,7 +117,10 @@
                 #   config.allowUnfree = true;
                 # };
 
+                # TODO: might be nicer to use the overlays flake output?
+
                 # Here's where derivations for our own services are going to go...
+                weatherframe = weatherframe.packages.${final.system}.default;
               })
             ];
           };
