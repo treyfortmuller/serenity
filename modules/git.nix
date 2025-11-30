@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.serenity.customGit;
 in
@@ -8,7 +13,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    programs.git ={
+    programs.git = {
       enable = true;
 
       config = {

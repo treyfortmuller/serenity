@@ -15,13 +15,13 @@
   };
 
   outputs =
-    { self
-    , nixpkgs
-    , nixos-hardware
-    , flake-utils
-    , vscode-server
-    , weatherframe
-    , # nixpkgs-unstable
+    {
+      self,
+      nixpkgs,
+      nixos-hardware,
+      flake-utils,
+      vscode-server,
+      weatherframe,
       ...
     }@inputs:
     let
@@ -70,7 +70,7 @@
           specialArgs = {
             inherit inputs;
           };
-        };  
+        };
 
         # Jerry is an RPi 4 Model B running a Pimoroni 4-color wHAT e-ink display for
         # fun and profit, except there's no profit and I rewrote the e-ink controller driver
@@ -95,7 +95,7 @@
             # All modules should be added to default modules, all config that does not need to be
             # enabled by default should be hidden behind a mkEnableOption. Simply importing a module
             # should be a no-op to the resultant config, except for the absolute basics included in base.nix.
-            # 
+            #
             # For this project we'll keep all options defined in-tree under `config.serenity`, as in, "serenity now!"
             imports = [
               nixos-hardware.nixosModules.raspberry-pi-4
@@ -103,6 +103,7 @@
               ./modules/base.nix
               ./modules/git.nix
               ./modules/inky.nix
+              ./modules/weatherframe.nix
             ];
 
             # final and prev, a.k.a. "self" and "super" respectively. This overlay
@@ -111,7 +112,7 @@
               (final: prev: {
                 # If we need some unstable packages, can provide an overlay with unstable
                 # on top of 25.05, etc.
-                # 
+                #
                 # unstable = import nixpkgs-unstable {
                 #   system = final.system;
                 #   config.allowUnfree = true;
@@ -126,6 +127,6 @@
           };
       };
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
     };
 }

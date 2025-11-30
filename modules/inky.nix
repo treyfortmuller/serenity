@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.serenity.inky;
 in
@@ -18,7 +23,9 @@ in
       ];
     };
 
-    users.groups = { spi = { }; };
+    users.groups = {
+      spi = { };
+    };
     services.udev.extraRules = ''
       # Add the spidev0.0 device to a group called spi (by default its root) so that our user
       # can be added to the group and make use of the device without elevated perms.
@@ -45,13 +52,13 @@ in
     # For the inky e-ink displays we need SPI comms with zero chip select pins enabled, our userspace library
     # will handle chip selection for us. We should end up with SPI drivers show up in lsmod, and a SPI character
     # device in /dev, but gpiochip0 lines 7 and 8 should not be claimed by a kernel driver.
-    # Here's the upstream overlay which achieves this, we're gonna drop it in verbatim, and only try 
+    # Here's the upstream overlay which achieves this, we're gonna drop it in verbatim, and only try
     # `hardware.raspberry-pi."4".apply-overlays-dtmerge.enable = true;` if we need to.
-    # 
+    #
     # https://github.com/raspberrypi/linux/blob/rpi-6.1.y/arch/arm/boot/dts/overlays/spi0-0cs-overlay.dts
     #
     # Other configurations that the TV hat option applied...
-    # 
+    #
     # hardware.raspberry-pi."4".apply-overlays-dtmerge.enable = true;
     # hardware.deviceTree.filter = "*-rpi-4-*.dtb";
     #

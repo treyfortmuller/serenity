@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [ ];
@@ -11,11 +16,11 @@
   services.vscode-server.enable = true;
 
   serenity = {
-    inky.enable = true;
     customGit.enable = true;
+    services.weatherframe = {
+      enable = true;
+      weatherLat = 33.617;
+      weatherLon = -117.831;
+    };
   };
-
-  environment.systemPackages = with pkgs; [
-    weatherframe
-  ];
 }

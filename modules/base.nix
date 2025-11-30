@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [ ];
@@ -25,10 +30,12 @@
     usePredictableInterfaceNames = true;
 
     # Static IP on the physical ethernet port
-    interfaces.end0.ipv4.addresses = [{
-      address = "192.168.10.7";
-      prefixLength = 24;
-    }];
+    interfaces.end0.ipv4.addresses = [
+      {
+        address = "192.168.10.7";
+        prefixLength = 24;
+      }
+    ];
   };
 
   # If null, the timezone will default to UTC and can be set imperatively
@@ -84,4 +91,3 @@
     ];
   };
 }
-
