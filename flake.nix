@@ -101,7 +101,7 @@
               nixos-hardware.nixosModules.raspberry-pi-4
               vscode-server.nixosModules.default
               ./modules/base.nix
-              ./modules/git.nix
+              ./modules/dev.nix
               ./modules/inky.nix
               ./modules/weatherframe.nix
             ];

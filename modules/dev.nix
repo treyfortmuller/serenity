@@ -1,3 +1,5 @@
+# Configuration that makes development on-device easier, some git configuration + user setup.
+
 {
   config,
   lib,
@@ -5,14 +7,18 @@
   ...
 }:
 let
-  cfg = config.serenity.customGit;
+  cfg = config.serenity.localDev;
 in
 {
-  options.serenity.customGit = {
-    enable = lib.mkEnableOption "custom git configuration for local hacking";
+  options.serenity.localDev = {
+    enable = lib.mkEnableOption "configuration local hacking";
+
+    enableVSCodeServer = lib.mkEnableOption "VSCode SSH remote dev";
   };
 
   config = lib.mkIf cfg.enable {
+    services.vscode-server.enable = cfg.enableVSCodeServer;
+
     programs.git = {
       enable = true;
 
