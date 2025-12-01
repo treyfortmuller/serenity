@@ -1,6 +1,6 @@
 # serenity
 
-NixOS configurations for the embedded Linux projects. Currently I'm only supporting the RPi 4 Model B, targeting aarch64.
+NixOS configurations for embedded Linux projects. Currently I'm only supporting the RPi 4 Model B, targeting aarch64.
 
 ### Install
 
