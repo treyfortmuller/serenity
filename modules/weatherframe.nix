@@ -13,7 +13,7 @@ let
       lon = cfg.weatherLon;
     };
     units = cfg.weatherUnits;
-    api_key_path = "XXX"; 
+    api_key_path = cfg.apiKeyPath;
     refresh_interval = {
       secs = cfg.refreshInterval;
       nanos = 0;
@@ -50,6 +50,18 @@ in
     };
 
     debugLogging = lib.mkEnableOption "debug logging";
+
+    user = mkOption {
+      type = types.str;
+      default = "pi";
+      description = "User under which the weatherframe service is run.";
+    };
+
+    group = mkOption {
+      type = types.str;
+      default = "users";
+      description = "Group under which the weatherframe service is run.";
+    };      
 
     apiKeyPath = lib.mkOption {
       type = lib.types.path;
@@ -141,12 +153,13 @@ in
 
       serviceConfig = {
         Type = "simple";
-        User = "pi";
-        Group = "pi";
+        User = cfg.user;
+        Group = cfg.group;
         Restart = "on-failure";
         RestartSec = "2s";
         BindReadOnlyPaths = [
           "${serviceConfigFile}"
+          "${cfg.apiKeyPath}"
         ];
         ExecStart =
           "${cfg.package}/bin/weatherframe run --config-path ${serviceConfigFile}"
