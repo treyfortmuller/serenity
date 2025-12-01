@@ -13,6 +13,23 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.05"; # Did you read the comment?
 
+  age = {
+    identityPaths = [
+      # This path is set up imperatively, thats on me
+      "/home/pi/.ssh/id_ed25519"
+    ];
+    secrets.openweather = let
+      wf = config.serenity.services.weatherframe;
+    in {
+      file = ../secrets/openweather.age;
+
+      # Make sure whatever user/group is running the weatherframe service can read the decrypted file
+      owner = wf.user;
+      group = wf.group;
+      mode = "400"; # Owner readable, and nothing else
+    };
+  };
+
   serenity = {
     localDev = {
       enable = true;
@@ -22,6 +39,7 @@
       enable = true;
       weatherLat = 33.617;
       weatherLon = -117.831;
+      apiKeyPath = config.age.secrets.openweather.path;
     };
   };
 

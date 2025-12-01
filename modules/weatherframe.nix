@@ -5,6 +5,8 @@
   ...
 }:
 let
+  inherit (lib) mkEnableOption mkOption types;
+
   cfg = config.serenity.services.weatherframe;
 
   serviceConfig = {
@@ -13,7 +15,7 @@ let
       lon = cfg.weatherLon;
     };
     units = cfg.weatherUnits;
-    api_key = "XXX"; # TODO: will have to sort out a better solution for this
+    api_key_path = cfg.apiKeyPath;
     refresh_interval = {
       secs = cfg.refreshInterval;
       nanos = 0;
@@ -41,44 +43,66 @@ in
   imports = [ ];
 
   options.serenity.services.weatherframe = {
-    enable = lib.mkEnableOption "weatherframe service";
+    enable = mkEnableOption "weatherframe service";
 
-    package = lib.mkOption {
+    package = mkOption {
       default = pkgs.weatherframe;
-      type = lib.types.package;
+      type = types.package;
       description = "the weatherframe package to use";
     };
 
-    debugLogging = lib.mkEnableOption "debug logging";
+    debugLogging = mkEnableOption "debug logging";
 
-    displayWidth = lib.mkOption {
+    user = mkOption {
+      type = types.str;
+      default = "pi";
+      description = "User under which the weatherframe service is run.";
+    };
+
+    group = mkOption {
+      type = types.str;
+      default = "users";
+      description = "Group under which the weatherframe service is run.";
+    };      
+
+    apiKeyPath = mkOption {
+      type = types.path;
+      description = ''
+        Filepath to a file containing the OpenWeather API key, ideally you're using some sort of secrets management
+        tool, in the case of agenix it'll look like:
+
+        config.age.secrets.openweather.path
+      '';
+    };
+
+    displayWidth = mkOption {
       default = 400;
-      type = lib.types.ints.positive;
+      type = types.ints.positive;
       description = ''
         Width of the inky display in pixels.
       '';
     };
 
-    displayHeight = lib.mkOption {
+    displayHeight = mkOption {
       default = 300;
-      type = lib.types.ints.positive;
+      type = types.ints.positive;
       description = ''
         Height of the inky display in pixels.
       '';
     };
 
-    refreshInterval = lib.mkOption {
+    refreshInterval = mkOption {
       default = 1200; # 20 minutes
-      type = lib.types.ints.positive;
+      type = types.ints.positive;
       description = ''
         The refresh interval, expressed in seconds, between weather polls and display updates, should be greater
         than 10 minutes since thats how frequently OpenWeather updates.
       '';
     };
 
-    weatherUnits = lib.mkOption {
+    weatherUnits = mkOption {
       default = "Imperial";
-      type = lib.types.enum [
+      type = types.enum [
         "Standard"
         "Imperial"
         "Metric"
@@ -88,25 +112,25 @@ in
       '';
     };
 
-    weatherLat = lib.mkOption {
+    weatherLat = mkOption {
       default = 33.617;
-      type = lib.types.float;
+      type = types.float;
       description = ''
         Latitude of the position to sample for the weather.
       '';
     };
 
-    weatherLon = lib.mkOption {
+    weatherLon = mkOption {
       default = -117.831;
-      type = lib.types.float;
+      type = types.float;
       description = ''
         Longitude of the position to sample for the weather.
       '';
     };
 
-    serviceConfig = lib.mkOption {
+    serviceConfig = mkOption {
       default = serviceConfigJson;
-      type = lib.types.str;
+      type = types.str;
       readOnly = true;
       internal = true;
       description = ''
@@ -131,12 +155,13 @@ in
 
       serviceConfig = {
         Type = "simple";
-        User = "pi";
-        Group = "pi";
+        User = cfg.user;
+        Group = cfg.group;
         Restart = "on-failure";
-        RestartSec = "2s";
-        BindReadOnlyPaths = [
+        RestartSec = "20s";
+        ReadOnlyPaths = [
           "${serviceConfigFile}"
+          "${cfg.apiKeyPath}"
         ];
         ExecStart =
           "${cfg.package}/bin/weatherframe run --config-path ${serviceConfigFile}"
