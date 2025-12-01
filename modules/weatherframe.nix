@@ -13,7 +13,7 @@ let
       lon = cfg.weatherLon;
     };
     units = cfg.weatherUnits;
-    api_key = "XXX"; # TODO: will have to sort out a better solution for this
+    api_key_path = "XXX"; 
     refresh_interval = {
       secs = cfg.refreshInterval;
       nanos = 0;
@@ -50,6 +50,16 @@ in
     };
 
     debugLogging = lib.mkEnableOption "debug logging";
+
+    apiKeyPath = lib.mkOption {
+      type = lib.types.path;
+      description = ''
+        Filepath to a file containing the OpenWeather API key, ideally you're using some sort of secrets management
+        tool, in the case of agenix it'll look like:
+
+        config.age.secrets.openweather.path
+      '';
+    };
 
     displayWidth = lib.mkOption {
       default = 400;

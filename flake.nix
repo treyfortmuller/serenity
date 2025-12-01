@@ -9,6 +9,12 @@
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.darwin.follows = ""; # saves some resources on Linux
+    };
+
     # Projects
     weatherframe = {
       url = "github:treyfortmuller/weatherframe";
@@ -33,6 +39,7 @@
       nixos-hardware,
       flake-utils,
       vscode-server,
+      agenix,
       weatherframe,
       openwx,
       tatted,
@@ -48,9 +55,11 @@
           pkgs = import nixpkgs { inherit system; };
         in
         pkgs.mkShell {
-          packages = [
-            pkgs.caligula
-            pkgs.nixpkgs-fmt
+          packages = with pkgs; [
+            caligula
+            nixfmt-tree
+            # agenix-cli
+            agenix.packages.${system}.default
           ];
         };
 
@@ -114,6 +123,7 @@
             imports = [
               nixos-hardware.nixosModules.raspberry-pi-4
               vscode-server.nixosModules.default
+              agenix.nixosModules.default
               ./modules/base.nix
               ./modules/dev.nix
               ./modules/inky.nix
