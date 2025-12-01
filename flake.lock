@@ -405,11 +405,11 @@
         "rust-overlay": "rust-overlay_3"
       },
       "locked": {
-        "lastModified": 1764556821,
-        "narHash": "sha256-MQs1ZXy/BiXAFi+t2WqBZUpGKq3lIRr0LD6seHoZSDs=",
+        "lastModified": 1764570042,
+        "narHash": "sha256-1SDrJPtix/89NHdCH0V2FM4owcVNCaZOmRyxJFsrQw0=",
         "owner": "treyfortmuller",
         "repo": "weatherframe",
-        "rev": "3908b7fbc180f8d5dc0768c6b017f153f67dea8b",
+        "rev": "46015ef801921e965b6e889e34a05d8ebe4f0ab6",
         "type": "github"
       },
       "original": {
