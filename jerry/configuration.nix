@@ -15,7 +15,7 @@
 
   age = {
     identityPaths = [
-      # This path is set up imperatively, thats on me
+      # This path is set up imperatively, bootstrapping trust is always left as an exercise for the developer
       "/home/pi/.ssh/id_ed25519"
     ];
     secrets.openweather = let
