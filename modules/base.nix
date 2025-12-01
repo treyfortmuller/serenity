@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [ ];
@@ -25,10 +30,12 @@
     usePredictableInterfaceNames = true;
 
     # Static IP on the physical ethernet port
-    interfaces.end0.ipv4.addresses = [{
-      address = "192.168.10.7";
-      prefixLength = 24;
-    }];
+    interfaces.end0.ipv4.addresses = [
+      {
+        address = "192.168.10.7";
+        prefixLength = 24;
+      }
+    ];
   };
 
   # If null, the timezone will default to UTC and can be set imperatively
@@ -38,10 +45,10 @@
   users.mutableUsers = true; # So we can change passwords after install
   users.users.pi = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel"
       "networkmanager"
-    ]; 
+    ];
 
     # Can switch to nix-sops if I end up needing to ship more secrets
     initialHashedPassword = "$y$j9T$e/ww3cpvzIyWV2oz4VOd6/$6sMcui1lQ7tN7ZnjkJWySfaDbWAgs9V0tSuBTaViJu3";
@@ -84,4 +91,3 @@
     ];
   };
 }
-

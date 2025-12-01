@@ -5,7 +5,13 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     flake-utils.url = "github:numtide/flake-utils";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
     # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    # Projects
+    weatherframe.url = "github:treyfortmuller/weatherframe";
+    weatherframe.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -14,7 +20,8 @@
       nixpkgs,
       nixos-hardware,
       flake-utils,
-      # nixpkgs-unstable
+      vscode-server,
+      weatherframe,
       ...
     }@inputs:
     let
@@ -56,7 +63,6 @@
           system = "aarch64-linux";
           modules = [
             self.nixosModules.default
-            nixos-hardware.nixosModules.raspberry-pi-4
 
             # Using the jerry hardware config for now since I only have one pi
             ./jerry/hardware-configuration.nix
@@ -73,7 +79,6 @@
           system = "aarch64-linux";
           modules = [
             self.nixosModules.default
-            nixos-hardware.nixosModules.raspberry-pi-4
             ./jerry/configuration.nix
             ./jerry/hardware-configuration.nix
           ];
@@ -90,9 +95,15 @@
             # All modules should be added to default modules, all config that does not need to be
             # enabled by default should be hidden behind a mkEnableOption. Simply importing a module
             # should be a no-op to the resultant config, except for the absolute basics included in base.nix.
+            #
+            # For this project we'll keep all options defined in-tree under `config.serenity`, as in, "serenity now!"
             imports = [
+              nixos-hardware.nixosModules.raspberry-pi-4
+              vscode-server.nixosModules.default
               ./modules/base.nix
+              ./modules/dev.nix
               ./modules/inky.nix
+              ./modules/weatherframe.nix
             ];
 
             # final and prev, a.k.a. "self" and "super" respectively. This overlay
@@ -101,18 +112,21 @@
               (final: prev: {
                 # If we need some unstable packages, can provide an overlay with unstable
                 # on top of 25.05, etc.
-                # 
+                #
                 # unstable = import nixpkgs-unstable {
                 #   system = final.system;
                 #   config.allowUnfree = true;
                 # };
 
+                # TODO: might be nicer to use the overlays flake output?
+
                 # Here's where derivations for our own services are going to go...
+                weatherframe = weatherframe.packages.${final.system}.default;
               })
             ];
           };
-        };
+      };
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
     };
 }
