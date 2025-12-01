@@ -10,8 +10,20 @@
     # nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     # Projects
-    weatherframe.url = "github:treyfortmuller/weatherframe";
-    weatherframe.inputs.nixpkgs.follows = "nixpkgs";
+    weatherframe = {
+      url = "github:treyfortmuller/weatherframe";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    openwx = {
+      url = "github:treyfortmuller/openwx";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    tatted = {
+      url = "github:treyfortmuller/tatted";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -22,6 +34,8 @@
       flake-utils,
       vscode-server,
       weatherframe,
+      openwx,
+      tatted,
       ...
     }@inputs:
     let
@@ -122,6 +136,8 @@
 
                 # Here's where derivations for our own services are going to go...
                 weatherframe = weatherframe.packages.${final.system}.default;
+                openwx = openwx.packages.${final.system}.default;
+                tatted = tatted.packages.${final.system}.default;
               })
             ];
           };

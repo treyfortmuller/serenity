@@ -24,4 +24,9 @@
       weatherLon = -117.831;
     };
   };
+
+  environment.systemPackages = [
+    pkgs.openwx
+    pkgs.tatted # binary is called tatctl
+  ];
 }
