@@ -15,6 +15,7 @@
 
   age = {
     identityPaths = [
+      # This path is set up imperatively, thats on me
       "/home/pi/.ssh/id_ed25519"
     ];
     secrets.openweather.file = ../secrets/openweather.age;

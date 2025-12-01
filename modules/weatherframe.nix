@@ -158,11 +158,11 @@ in
         User = cfg.user;
         Group = cfg.group;
         Restart = "on-failure";
-        RestartSec = "2s";
-        BindReadOnlyPaths = [
-          "${serviceConfigFile}"
-          "${cfg.apiKeyPath}"
-        ];
+        RestartSec = "20s";
+        # BindReadOnlyPaths = [
+        #   "${serviceConfigFile}"
+        #   "${cfg.apiKeyPath}"
+        # ];
         ExecStart =
           "${cfg.package}/bin/weatherframe run --config-path ${serviceConfigFile}"
           + lib.optionalString cfg.debugLogging " --debug";

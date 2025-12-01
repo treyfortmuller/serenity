@@ -66,6 +66,10 @@
     git
   ];
 
+  environment.sessionVariables = {
+    SYSTEMD_EDITOR = "${pkgs.vim}/bin/vim";
+  };
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
