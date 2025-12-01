@@ -5,6 +5,8 @@
   ...
 }:
 let
+  inherit (lib) mkEnableOption mkOption types;
+
   cfg = config.serenity.services.weatherframe;
 
   serviceConfig = {
@@ -41,15 +43,15 @@ in
   imports = [ ];
 
   options.serenity.services.weatherframe = {
-    enable = lib.mkEnableOption "weatherframe service";
+    enable = mkEnableOption "weatherframe service";
 
-    package = lib.mkOption {
+    package = mkOption {
       default = pkgs.weatherframe;
-      type = lib.types.package;
+      type = types.package;
       description = "the weatherframe package to use";
     };
 
-    debugLogging = lib.mkEnableOption "debug logging";
+    debugLogging = mkEnableOption "debug logging";
 
     user = mkOption {
       type = types.str;
@@ -63,8 +65,8 @@ in
       description = "Group under which the weatherframe service is run.";
     };      
 
-    apiKeyPath = lib.mkOption {
-      type = lib.types.path;
+    apiKeyPath = mkOption {
+      type = types.path;
       description = ''
         Filepath to a file containing the OpenWeather API key, ideally you're using some sort of secrets management
         tool, in the case of agenix it'll look like:
@@ -73,34 +75,34 @@ in
       '';
     };
 
-    displayWidth = lib.mkOption {
+    displayWidth = mkOption {
       default = 400;
-      type = lib.types.ints.positive;
+      type = types.ints.positive;
       description = ''
         Width of the inky display in pixels.
       '';
     };
 
-    displayHeight = lib.mkOption {
+    displayHeight = mkOption {
       default = 300;
-      type = lib.types.ints.positive;
+      type = types.ints.positive;
       description = ''
         Height of the inky display in pixels.
       '';
     };
 
-    refreshInterval = lib.mkOption {
+    refreshInterval = mkOption {
       default = 1200; # 20 minutes
-      type = lib.types.ints.positive;
+      type = types.ints.positive;
       description = ''
         The refresh interval, expressed in seconds, between weather polls and display updates, should be greater
         than 10 minutes since thats how frequently OpenWeather updates.
       '';
     };
 
-    weatherUnits = lib.mkOption {
+    weatherUnits = mkOption {
       default = "Imperial";
-      type = lib.types.enum [
+      type = types.enum [
         "Standard"
         "Imperial"
         "Metric"
@@ -110,25 +112,25 @@ in
       '';
     };
 
-    weatherLat = lib.mkOption {
+    weatherLat = mkOption {
       default = 33.617;
-      type = lib.types.float;
+      type = types.float;
       description = ''
         Latitude of the position to sample for the weather.
       '';
     };
 
-    weatherLon = lib.mkOption {
+    weatherLon = mkOption {
       default = -117.831;
-      type = lib.types.float;
+      type = types.float;
       description = ''
         Longitude of the position to sample for the weather.
       '';
     };
 
-    serviceConfig = lib.mkOption {
+    serviceConfig = mkOption {
       default = serviceConfigJson;
-      type = lib.types.str;
+      type = types.str;
       readOnly = true;
       internal = true;
       description = ''
