@@ -115,7 +115,7 @@
 
       nixosModules = {
         default =
-          { ... }:
+          { config, lib, ... }:
           {
             # All modules should be added to default modules, all config that does not need to be
             # enabled by default should be hidden behind a mkEnableOption. Simply importing a module
@@ -131,6 +131,38 @@
               ./modules/inky.nix
               ./modules/weatherframe.nix
             ];
+
+            # TODO: aliases so I don't have to traverse such a deep attribute tree, probably
+            # would want to do this via a readOnly option in the base module.
+            # 
+            # build-toplevel => config.system.build.toplevel;
+            # build-qemu => config.system.build.images.qemu;
+            # build-sd-card => config.system.build.images.sd-card;
+            options = {
+              serenityBuilds = lib.mkOption {
+                type = lib.types.lazyAttrsOf lib.types.raw;
+                default = {
+                  buildToplevel = config.system.build.toplevel;
+                  buildQemu = config.system.build.images.qemu;
+                  buildSdCard = config.system.build.images.sd-card;
+                };
+                description = "aliases";
+                readOnly = true;
+              };
+            };
+
+            config = {
+            image.modules = {
+              # nixosConfigurations.base.config.system.build.images.qemu.passthru.config.services.openssh.enable
+              qemu = { config, lib, ... }: {
+                services.openssh.enable = lib.mkForce false;
+              };
+            };
+
+
+            # TODO: restricting to cross-compilation for now...
+            nixpkgs.hostPlatform = "aarch64-linux";
+            nixpkgs.buildPlatform = "x86_64-linux";
 
             # final and prev, a.k.a. "self" and "super" respectively. This overlay
             # makes 'pkgs.unstable' available.
@@ -152,6 +184,9 @@
                 tatted = tatted.packages.${final.system}.default;
               })
             ];
+
+            };
+
           };
       };
 
